@@ -1,7 +1,10 @@
 <template>
   <div class="block" :class="data.build.status">
     <h1>{{data.id}}</h1>
-    <h2>Build: <a target="_blank" :href="data.build.link">#{{data.build.id}}</a></h2>
+    <h2 v-show="data.build.id">
+      Build:
+      <a target="_blank" :href="data.build.link">#{{data.build.id}}</a>
+    </h2>
 
     <i class="fa fa-4x" :class="statusIconClass"></i>
 
@@ -10,7 +13,10 @@
       <b>{{builtRelative}}</b>
     </p>
 
-    <p>on commit: <a :href="data.build.commitLink">{{shortCommit}}</a></p>
+    <p v-show="shortCommit">
+      on commit:
+      <a target="_blank" :href="data.build.commitLink">{{shortCommit}}</a>
+    </p>
 
     <a :href="data.destination" class="block-link">{{data.destination}}</a>
   </div>
@@ -22,20 +28,33 @@ import moment from 'moment';
 export default {
   name: 'ServerBlock',
   props: ['data'],
+  data() {
+    return {
+      now: Date.now(),
+    };
+  },
+  created() {
+    setInterval(() => {
+      this.now = Date.now();
+    }, 1000);
+  },
   computed: {
     shortCommit() {
-      return this.data.build.commit.substr(0, 6);
+      return this.data.build.commit ? this.data.build.commit.substr(0, 6) : null;
     },
     builtRelative() {
+      if (this.data.build.status === 'pending') {
+        return moment.utc(moment(this.now).diff(moment(this.data.timestamp))).format('HH:mm:ss');
+      }
+
       return moment(this.data.timestamp).fromNow();
     },
     statusIconClass() {
-      console.log('this.data', this.data);
       return {
         fail: 'fa-exclamation-circle',
         pending: 'fa-pulse fa-spinner',
         success: 'fa-check',
-      }[this.data.build.status];
+      }[this.data.build.status] || 'fa-question';
     },
   },
 };
@@ -63,6 +82,7 @@ export default {
     color: #fff;
     margin: 1rem;
     position: relative;
+    background: #666;
   }
 
   .fa {
