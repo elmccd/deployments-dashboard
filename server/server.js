@@ -9,8 +9,10 @@ const clients = {
   sockets: [],
 };
 
-server.listen(3003);
-console.log(`Listening on ${3003}`);
+const PORT = process.env.SERVER_PORT || 3003;
+
+server.listen(PORT);
+console.log(`Listening on ${PORT}`);
 
 app.use(express.json());
 app.use('/', express.static('../dist'));
@@ -65,21 +67,6 @@ app.get('/track', (req, res) => {
     res.sendStatus(500);
   }
 });
-
-function getStatusData(serverId) {
-  return {
-    id: serverId,
-    destination: 'http://127.0.0.1',
-    timestamp: 1518112373437,
-    build: {
-      id: '56',
-      link: 'http://google.com',
-      status: ['pending', 'fail', 'success'][Math.floor(Math.random() * 3)],
-      commit: '9121877b63df7812fe9968d6256a68c2ccebe139',
-      commitLink: 'https://github.com',
-    },
-  };
-}
 
 io.on('connection', (socket) => {
   console.log('connection');
