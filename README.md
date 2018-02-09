@@ -5,7 +5,9 @@
 
 ## Running server
 
-`npm run server` and open `localhost:3003`
+`cd server && npm install`
+
+`npm run server` and open `HOST:3003`
 
 ## Tracking changes
 
@@ -30,6 +32,11 @@ Example payload structure:
   },
 }
 ```
+
+#### Using `POST` api
+
+You can also send POST requests with JSON as payload instead of url parameters
+
 
 ### Updating server status:
 
@@ -60,6 +67,22 @@ GET `HOST:3003/track?id=production&build.status=success`
 Make sure to call track with fail or success after sending `pending`, if
 you don't UI will not know if it's done and it will stay `pending` till
 next track call.
+
+## Persistence
+
+Server data about the servers is kept in memory, every restart of the
+server will clear saved status until next track requests arrive.
+
+## TODO:
+
+- remove single/all endpoints
+- more options to pass - author, description
+- nice UI
+- configurable UI
+- sorting / keeping order
+- deployments history
+- provide user config with templates for links & server defaults
+- more customizable
 
 ## Build Frontend
 

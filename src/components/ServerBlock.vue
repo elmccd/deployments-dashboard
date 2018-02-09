@@ -13,9 +13,17 @@
       <b>{{builtRelative}}</b>
     </p>
 
+    <p>Status: <b>{{data.build.status_message}}</b></p>
+    <p>Author: <b>{{data.build.author}}</b></p>
+    <p>Deployed by: <b>{{data.build.committer}}</b></p>
+    <p>
+      Message:
+      <i>{{data.build.message}}</i>
+    </p>
+
     <p v-show="shortCommit">
       on commit:
-      <a target="_blank" :href="data.build.commitLink">{{shortCommit}}</a>
+      <a target="_blank" :href="data.build.compare_url">{{shortCommit}}</a>
     </p>
 
     <a :href="data.destination" class="block-link">{{data.destination}}</a>
@@ -51,10 +59,18 @@ export default {
     },
     statusIconClass() {
       return {
+        Errored: 'fa-exclamation-circle',
+        Broken: 'fa-exclamation-triangle',
         fail: 'fa-exclamation-circle',
+        Failed: 'fa-exclamation-circle',
+        'Still Failing': 'fa-exclamation-circle',
+        Canceled: 'fa-ban',
+        Pending: 'fa-pulse fa-spinner',
         pending: 'fa-pulse fa-spinner',
+        Fixed: 'fa-wrench',
+        Passed: 'fa-check',
         success: 'fa-check',
-      }[this.data.build.status] || 'fa-question';
+      }[this.data.build.status_message || this.data.build.status] || 'fa-question';
     },
   },
 };
