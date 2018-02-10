@@ -79,7 +79,7 @@ app.post('/track/travis', (req, res) => {
   console.log(req.body);
   try {
     if (req.body.id) {
-      const payload = convertTravisPayload(req.body);
+      const payload = convertTravisPayload(JSON.parse(req.body.payload));
 
       // overwrite travis with query params
       Object.keys(req.query).forEach((key) => {
