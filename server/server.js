@@ -1,5 +1,6 @@
 const express = require('express');
 const _ = require('lodash');
+const bodyParser = require('body-parser');
 
 const app = express();
 const server = require('http').Server(app);
@@ -14,9 +15,8 @@ const PORT = process.env.SERVER_PORT || 3003;
 server.listen(PORT);
 console.log(`Listening on ${PORT}`);
 
-app.use(express.json({
-  type: 'application/x-www-form-urlencoded',
-}));
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use('/', express.static('../dist'));
 
 const servers = {};
@@ -75,6 +75,7 @@ function convertTravisPayload(travis) {
 }
 
 app.post('/track/travis', (req, res) => {
+  console.log('POST');
   console.log(req.body);
   try {
     if (req.body.id) {
