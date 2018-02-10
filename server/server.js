@@ -80,6 +80,7 @@ app.post('/track/travis', (req, res) => {
     if (req.body.id) {
       const payload = convertTravisPayload(req.body);
 
+      // overwrite travis with query params
       Object.keys(req.query).forEach((key) => {
         _.set(payload, key, req.query[key]);
       });
@@ -114,11 +115,12 @@ io.on('connection', (socket) => {
   clients.sockets.push(socket);
 
   Object.keys(servers).forEach((serverId) => {
+    console.log('initial emit');
     emit(servers[serverId], socket);
   });
 
   socket.on('getStatus', (serverId) => {
-    console.log('server', serverId);
+    console.log('getStatus', serverId);
     emit(servers[serverId], socket);
   });
 

@@ -14,8 +14,6 @@
 import ioClient from 'socket.io-client';
 import ServerBlock from './components/ServerBlock';
 
-const io = ioClient({ path: '/ws' });
-
 export default {
   name: 'App',
   components: {
@@ -28,18 +26,10 @@ export default {
     };
   },
   created() {
-    console.log(44);
-    console.log(this);
-
-    setInterval(() => {
-      Object.keys(this.servers).forEach((serverId) => {
-        io.emit('getStatus', this.servers[serverId].id);
-      });
-    }, 1000);
+    const io = ioClient({ path: '/ws' });
 
     io.on('status', (data) => {
       this.$set(this.servers, [data.id], data);
-
       this.state = 'loaded';
     });
 
