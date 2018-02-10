@@ -77,9 +77,13 @@ function convertTravisPayload(travis) {
 app.post('/track/travis', (req, res) => {
   console.log('POST');
   console.log(req.body);
+
   try {
-    if (req.body.id) {
-      const payload = convertTravisPayload(JSON.parse(req.body.payload));
+    const travisPayload = JSON.parse(req.body.payload);
+    console.log('travisPayload', travisPayload);
+
+    if (travisPayload.id) {
+      const payload = convertTravisPayload(travisPayload);
 
       // overwrite travis with query params
       Object.keys(req.query).forEach((key) => {
@@ -92,6 +96,8 @@ app.post('/track/travis', (req, res) => {
     }
     res.sendStatus(500);
   } catch (err) {
+    console.log('err');
+    console.log(err);
     res.sendStatus(500);
   }
 });
