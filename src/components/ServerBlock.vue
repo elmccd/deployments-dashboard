@@ -13,10 +13,10 @@
       <b>{{builtRelative}}</b>
     </p>
 
-    <p>Status: <b>{{data.build.status_message}}</b></p>
-    <p>Author: <b>{{data.build.author}}</b></p>
-    <p>Deployed by: <b>{{data.build.committer}}</b></p>
-    <p>
+    <p v-show="data.build.status_message">Status: <b>{{data.build.status_message}}</b></p>
+    <p v-show="data.build.author">Author: <b>{{data.build.author}}</b></p>
+    <p v-show="data.build.committer">Deployed by: <b>{{data.build.committer}}</b></p>
+    <p v-show="data.build.message">
       Message:
       <i>{{data.build.message}}</i>
     </p>
