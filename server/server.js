@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/', express.static('../dist'));
 
-const servers = {};
+let servers = {};
 
 function emit(data, socket) {
   console.log('emitting', data);
@@ -73,6 +73,11 @@ function convertTravisPayload(travis) {
     },
   };
 }
+
+app.get('/track/clear', (req, res) => {
+  servers = {};
+  res.sendStatus(200);
+});
 
 app.post('/track/travis', (req, res) => {
   console.log('POST');

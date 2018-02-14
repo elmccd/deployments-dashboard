@@ -93,6 +93,7 @@ export default {
   }
 
   .block {
+    flex-grow: 1;
     max-width: 20rem;
     padding: 1rem;
     color: #fff;
